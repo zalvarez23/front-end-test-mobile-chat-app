@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack, usePathname, useSegments, useRouter } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import React, { useEffect } from "react";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Stack, usePathname, useSegments, useRouter } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import "react-native-reanimated";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { AppProvider, useAppContext } from '@/hooks/AppContext';
-import { DrizzleStudioDevTool } from '@/database/DrizzleStudio';
+import { useColorScheme } from "@/src/shared/hooks/useColorScheme";
+import { AppProvider, useAppContext } from "@/src/shared/hooks/AppContext";
+import { DrizzleStudioDevTool } from "@/src/core/database/DrizzleStudio";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -17,16 +21,14 @@ function useProtectedRoute(isLoggedIn: boolean, loading: boolean) {
   const router = useRouter();
 
   useEffect(() => {
-    if (loading) return; // Don't redirect during loading
-    
-    const inAuthGroup = segments[0] === 'login';
-    
+    if (loading) return;
+
+    const inAuthGroup = segments[0] === "login";
+
     if (!isLoggedIn && !inAuthGroup) {
-      // Redirect to the login page if not logged in
-      router.replace('/login');
+      router.replace("/login");
     } else if (isLoggedIn && inAuthGroup) {
-      // Redirect to the home page if logged in and trying to access login page
-      router.replace('/(tabs)');
+      router.replace("/(tabs)");
     }
   }, [isLoggedIn, segments, loading]);
 }
@@ -34,21 +36,17 @@ function useProtectedRoute(isLoggedIn: boolean, loading: boolean) {
 function RootLayoutNav() {
   const { isLoggedIn, loading } = useAppContext();
 
-  // Call the hook unconditionally
   useProtectedRoute(isLoggedIn, loading);
 
   return (
     <>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen 
-          name="login" 
-          options={{ headerShown: false, gestureEnabled: false }} 
+        <Stack.Screen
+          name="login"
+          options={{ headerShown: false, gestureEnabled: false }}
         />
-        <Stack.Screen 
-          name="ChatRoom" 
-          options={{ headerShown: true }} 
-        />
+        <Stack.Screen name="ChatRoom" options={{ headerShown: true }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       {__DEV__ && <DrizzleStudioDevTool />}
@@ -59,7 +57,7 @@ function RootLayoutNav() {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
@@ -73,7 +71,7 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <AppProvider>
         <RootLayoutNav />
         <StatusBar style="auto" />

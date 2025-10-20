@@ -28,7 +28,7 @@ Why? Because we wanted to allow possible **errors that result from improper AI u
 
 You’re free to choose any number of tasks from the list of **Bug Fixes**, **UI/UX Enhancements**, **Feature Additions**, or **Performance Improvements**. Alternatively, you can **ignore the list and improve the app however you see fit** which we’d love to see!
 
-That said, we care far more about **code quality** and **simplicity** (*KISS principles*) than about the number of tasks completed. **Choose tasks that best showcase your seniority and thoughtful design**, rather than trying to tackle too much.
+That said, we care far more about **code quality** and **simplicity** (_KISS principles_) than about the number of tasks completed. **Choose tasks that best showcase your seniority and thoughtful design**, rather than trying to tackle too much.
 
 Please make sure to **document your task selection, implementation details, and reasoning** in the `IMPLEMENTATION.md` file, as outlined in the **Submission Guidelines**.
 
