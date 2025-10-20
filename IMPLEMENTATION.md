@@ -17,6 +17,7 @@ Este documento detalla las mejoras implementadas en la aplicación de chat móvi
 
 - **Orden de mensajes corregido** - Los mensajes más nuevos aparecen en la parte inferior
 - **Problemas de superposición del teclado** solucionados con KeyboardAvoidingView optimizado
+- **Avatar text cutoff** - Problema de texto cortado en avatares solucionado
 
 ### ✅ **Mejoras de UI/UX**
 
@@ -269,35 +270,32 @@ const getStatusText = () => {
 
 ### **1. Avatar Text Cutoff**
 
-**Problema**: Texto de iniciales cortado en avatares pequeños
+**Problema**: Texto de iniciales cortado en avatares, especialmente en pantalla de perfil (size=100)
+**Causa**: ThemedText aplicaba estilos por defecto que interferían con el centrado
 **Solución**:
 
 ```typescript
-// Reducir tamaño de fuente y mejorar alineación
-fontSize: size * 0.35,  // ↓ de 0.4 a 0.35
-minHeight: 40,          // Altura mínima garantizada
-textAlign: "center",    // Centrado horizontal
-lineHeight: 1,          // Sin espacio extra de línea
+// Cambiar de ThemedText a Text nativo para control total
+<Text style={[styles.initials, { fontSize: size * 0.35 }]}>
+  {initials}
+</Text>
+
+// Estilos optimizados para centrado perfecto
+initials: {
+  color: "white",
+  fontWeight: "bold",
+  textAlign: "center",           // Centrado horizontal
+  textAlignVertical: "center",   // Centrado vertical (Android)
+  includeFontPadding: false,     // Sin padding extra de fuente
+},
+avatar: {
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: 40,                 // Altura mínima garantizada
+},
 ```
 
-### **2. BottomSheet No Cerraba**
-
-**Problema**: Modal no se cerraba al tocar fuera
-**Solución**:
-
-```typescript
-<TouchableWithoutFeedback onPress={handleClose}>
-  <View style={styles.modalContainer}>
-    <TouchableWithoutFeedback onPress={() => {}}>
-      <Animated.View style={styles.container}>
-        {/* Contenido del modal */}
-      </Animated.View>
-    </TouchableWithoutFeedback>
-  </View>
-</TouchableWithoutFeedback>
-```
-
-### **3. Orden de Mensajes Incorrecto**
+### **2. Orden de Mensajes Incorrecto**
 
 **Problema**: Mensajes nuevos aparecían arriba
 **Solución**:
@@ -317,7 +315,7 @@ useEffect(() => {
 }, [chat?.messages.length]);
 ```
 
-### **4. Imágenes No Aparecían Inmediatamente**
+### **3. Imágenes No Aparecían Inmediatamente**
 
 **Problema**: Imágenes requerían restart de app
 **Solución**:
@@ -344,7 +342,7 @@ return {
 };
 ```
 
-### **5. Superposición del Teclado**
+### **4. Superposición del Teclado**
 
 **Problema**: Teclado cubría input en dispositivos pequeños
 **Solución**:
@@ -499,6 +497,7 @@ const chatName = useMemo(() => {
 | **UX de edición**       | Confuso, sin indicadores   | Enfocado, intuitivo      | **Significativa**       |
 | **Búsqueda**            | No implementada            | Tiempo real con debounce | **Nueva funcionalidad** |
 | **Orden de mensajes**   | Incorrecto (nuevos arriba) | Correcto (nuevos abajo)  | **Corregido**           |
+| **Avatar text cutoff**  | Texto cortado en perfil    | Centrado perfecto        | **Solucionado**         |
 | **Gestión de DB**       | Múltiples conexiones       | Singleton garantizado    | **Optimizada**          |
 
 ## 🎯 Decisiones de Diseño

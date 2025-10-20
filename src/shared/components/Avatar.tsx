@@ -1,6 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { ThemedText } from "./ThemedText";
+import { View, StyleSheet, Text } from "react-native";
 import { User } from "@/src/shared/types";
 
 interface AvatarProps {
@@ -60,9 +59,9 @@ export function Avatar({ user, size = 40, showStatus = true }: AvatarProps) {
           },
         ]}
       >
-        <ThemedText style={[styles.initials, { fontSize: size * 0.4 }]}>
+        <Text style={[styles.initials, { fontSize: size * 0.35 }]}>
           {initials}
-        </ThemedText>
+        </Text>
       </View>
       {showStatus && user?.status && (
         <View
@@ -90,10 +89,14 @@ const styles = StyleSheet.create({
   avatar: {
     alignItems: "center",
     justifyContent: "center",
+    minHeight: 40,
   },
   initials: {
     color: "white",
     fontWeight: "bold",
+    textAlign: "center",
+    textAlignVertical: "center",
+    includeFontPadding: false,
   },
   statusIndicator: {
     position: "absolute",
